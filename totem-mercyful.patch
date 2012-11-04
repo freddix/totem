@@ -1,0 +1,30 @@
+diff -aurN totem-3.6.2.orig/configure.in totem-3.6.2/configure.in
+--- totem-3.6.2.orig/configure.in	2012-11-01 19:31:15.686488809 +0100
++++ totem-3.6.2/configure.in	2012-11-01 19:34:44.536225578 +0100
+@@ -152,7 +152,7 @@
+ 		AC_MSG_RESULT([yes])
+ 	else
+ 		AC_MSG_RESULT([no])
+-		AC_MSG_ERROR([
++		AC_MSG_WARN([
+ 			Cannot find required GStreamer-1.0 plugin '$1'.
+ 			It should be part of gst-plugins-base. Please install it.
+ 		])
+@@ -171,7 +171,7 @@
+ 		AC_MSG_RESULT([yes])
+ 	else
+ 		AC_MSG_RESULT([no])
+-		AC_MSG_ERROR([
++		AC_MSG_WARN([
+ 			Cannot find required GStreamer-1.0 plugin '$1'.
+ 			It should be part of gst-plugins-good. Please install it.
+ 		])
+@@ -191,7 +191,7 @@
+ 		AC_MSG_RESULT([yes])
+ 	else
+ 		AC_MSG_RESULT([no])
+-		AC_MSG_ERROR([
++		AC_MSG_WARN([
+ 			Cannot find required GStreamer-1.0 plugin '$1'.
+ 			It should be part of gst-plugins-bad. Please install it.
+ 		])
