@@ -1,11 +1,11 @@
 Summary:	Movie player for GNOME
 Name:		totem
-Version:	3.6.2
+Version:	3.6.3
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.6/%{name}-%{version}.tar.xz
-# Source0-md5:	095849501a77277a2399b9a0e8d49343
+# Source0-md5:	0afbc46fcb5a1c2634fb3ef7c181ecb9
 Patch0:		%{name}-mercyful.patch
 URL:		http://www.gnome.org/projects/totem/
 BuildRequires:	autoconf
