@@ -1,7 +1,7 @@
 Summary:	Movie player for GNOME
 Name:		totem
 Version:	3.6.3
-Release:	1
+Release:	2
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.6/%{name}-%{version}.tar.xz
@@ -30,15 +30,17 @@ BuildRequires:	xorg-libXv-devel
 BuildRequires:	xorg-libXxf86vm-devel
 BuildRequires:	xorg-proto
 BuildRequires:  libtool
+Requires(post,postun):	/usr/bin/gtk-update-icon-cache
 Requires(post,postun):	glib-gio-gsettings
-Requires(post,postun):	gtk+-update-icon-cache
 Requires(post,postun):	hicolor-icon-theme
 Requires(post,postun):	rarian
 Requires:	%{name}-libs = %{version}-%{release}
+Requires:	gstreamer-clutter
 Requires:	gstreamer-libav
 Requires:	gstreamer-plugins-bad
 Requires:	gstreamer-plugins-base
 Requires:	gstreamer-plugins-good
+Requires:	gstreamer-plugins-ugly
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		plugindir	%{_libdir}/browser-plugins
@@ -228,8 +230,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/totem/plugins/screenshot
 %dir %{_libdir}/totem/plugins/skipto
 
-%{_datadir}/GConf/gsettings/opensubtitles.convert
-%{_datadir}/GConf/gsettings/pythonconsole.convert
 %{_datadir}/glib-2.0/schemas/org.gnome.totem.plugins.opensubtitles.gschema.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.totem.plugins.pythonconsole.gschema.xml
 
