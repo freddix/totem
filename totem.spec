@@ -1,7 +1,7 @@
 Summary:	Movie player for GNOME
 Name:		totem
 Version:	3.6.3
-Release:	2
+Release:	3
 License:	GPL v2
 Group:		X11/Applications/Multimedia
 Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.6/%{name}-%{version}.tar.xz
@@ -129,6 +129,7 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 	--disable-vala			\
 	--enable-browser-plugins	\
 	--enable-nautilus		\
+	--enable-vegas-plugin=no	\
 	--with-html-dir=%{_gtkdocdir}
 
 %{__make} -j1 -C help
@@ -250,5 +251,8 @@ rm -rf $RPM_BUILD_ROOT
 %files -n browser-plugin-totem
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libexecdir}/totem-plugin-viewer
-%attr(755,root,root) %{plugindir}/*.so
+%attr(755,root,root) %{plugindir}/libtotem-cone-plugin.so
+%attr(755,root,root) %{plugindir}/libtotem-gmp-plugin.so
+%attr(755,root,root) %{plugindir}/libtotem-mully-plugin.so
+%attr(755,root,root) %{plugindir}/libtotem-narrowspace-plugin.so
 
