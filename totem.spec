@@ -1,11 +1,11 @@
 Summary:	Movie player for GNOME
 Name:		totem
-Version:	3.6.3
-Release:	3
+Version:	3.8.0
+Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
-Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.6/%{name}-%{version}.tar.xz
-# Source0-md5:	0afbc46fcb5a1c2634fb3ef7c181ecb9
+Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.8/%{name}-%{version}.tar.xz
+# Source0-md5:	76eb42c772fa37f76678f270402303bd
 Patch0:		%{name}-mercyful.patch
 URL:		http://www.gnome.org/projects/totem/
 BuildRequires:	autoconf
@@ -111,13 +111,13 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
     -i -e 's/GNOME_MAINTAINER_MODE_DEFINES//g'	\
     -i -e 's/GNOME_COMMON_INIT//g'		\
     -i -e 's/GNOME_DEBUG_CHECK//g' 		\
-    -i -e 's/codegen.py/codegen.pyc/g' configure.in
+    -i -e 's/codegen.py/codegen.pyc/g' configure.ac
 
 %build
 %{__gtkdocize}
 %{__intltoolize}
 %{__libtoolize}
-%{__aclocal}
+%{__aclocal} -I libgd
 %{__autoheader}
 %{__autoconf}
 %{__automake}
