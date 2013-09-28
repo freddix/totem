@@ -1,11 +1,11 @@
 Summary:	Movie player for GNOME
 Name:		totem
-Version:	3.8.2
+Version:	3.10.0
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
-Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.8/%{name}-%{version}.tar.xz
-# Source0-md5:	a7b332a6d3bb475e425fcb3bc45affee
+Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.10/%{name}-%{version}.tar.xz
+# Source0-md5:	e851a1d5eff8aef7d3be703c89e253e1
 Patch0:		%{name}-mercyful.patch
 URL:		http://www.gnome.org/projects/totem/
 BuildRequires:	autoconf
@@ -24,7 +24,7 @@ BuildRequires:	libgdata-devel
 BuildRequires:	libpeas-gtk-devel
 BuildRequires:	libtool
 BuildRequires:	pkg-config
-BuildRequires:	totem-pl-parser-devel
+BuildRequires:	totem-pl-parser-devel >= 3.10.0
 BuildRequires:	tracker-devel
 BuildRequires:	xorg-libXv-devel
 BuildRequires:	xorg-libXxf86vm-devel
@@ -33,7 +33,6 @@ BuildRequires:  libtool
 Requires(post,postun):	/usr/bin/gtk-update-icon-cache
 Requires(post,postun):	glib-gio-gsettings
 Requires(post,postun):	hicolor-icon-theme
-Requires(post,postun):	rarian
 Requires:	%{name}-libs = %{version}-%{release}
 Requires:	gstreamer-clutter
 Requires:	gstreamer-libav
@@ -107,7 +106,7 @@ Totem Web Browser plugin.
 %patch0 -p1
 
 # kill gnome common deps
-sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
+%{__sed} -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
     -i -e 's/GNOME_MAINTAINER_MODE_DEFINES//g'	\
     -i -e 's/GNOME_COMMON_INIT//g'		\
     -i -e 's/GNOME_DEBUG_CHECK//g' 		\
@@ -123,7 +122,6 @@ sed -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
 %{__automake}
 %configure \
 	--disable-schemas-compile	\
-	--disable-scrollkeeper		\
 	--disable-silent-rules		\
 	--disable-static		\
 	--disable-vala			\
@@ -143,28 +141,25 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT		\
 	BROWSER_PLUGIN_DIR=%{plugindir}
 
-rm -f $RPM_BUILD_ROOT%{plugindir}/*.la
-rm -f $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-3.0/*.la
-rm -rf $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
-rm -f $RPM_BUILD_ROOT%{_libdir}/totem/plugins/*/*.la
+%{__rm} $RPM_BUILD_ROOT%{plugindir}/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-3.0/*.la
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/totem/plugins/*/*.{la,py}
 
 %py_comp $RPM_BUILD_ROOT%{_libdir}/totem
 %py_ocomp $RPM_BUILD_ROOT%{_libdir}/totem
-rm -f $RPM_BUILD_ROOT%{_libdir}/totem/plugins/{*,*/*}.py
 
-%find_lang %{name} --with-gnome --with-omf
+%find_lang %{name} --with-gnome
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-%scrollkeeper_update_post
 %update_desktop_database
 %update_icon_cache hicolor
 %update_gsettings_cache
 
 %postun
-%scrollkeeper_update_postun
 %update_desktop_database
 %update_icon_cache hicolor
 %update_gsettings_cache
