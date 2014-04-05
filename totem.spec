@@ -1,11 +1,11 @@
 Summary:	Movie player for GNOME
 Name:		totem
-Version:	3.10.1
-Release:	2
+Version:	3.12.0
+Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
-Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.10/%{name}-%{version}.tar.xz
-# Source0-md5:	d2382097573744d273af8e28c56fe3bd
+Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.12/%{name}-%{version}.tar.xz
+# Source0-md5:	299f6eb10902829fc1368034e6edb509
 Patch0:		%{name}-mercyful.patch
 URL:		http://www.gnome.org/projects/totem/
 BuildRequires:	autoconf
@@ -16,7 +16,6 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	gnome-desktop-devel
 BuildRequires:	gnome-icon-theme-devel
 BuildRequires:	gobject-introspection-devel
-BuildRequires:	grilo-devel
 BuildRequires:	gstreamer-plugins-base-devel
 BuildRequires:	intltool
 BuildRequires:	iso-codes
@@ -106,11 +105,14 @@ Totem Web Browser plugin.
 %patch0 -p1
 
 # kill gnome common deps
-%{__sed} -i -e 's/GNOME_COMPILE_WARNINGS.*//g'	\
-    -i -e 's/GNOME_MAINTAINER_MODE_DEFINES//g'	\
-    -i -e 's/GNOME_COMMON_INIT//g'		\
-    -i -e 's/GNOME_DEBUG_CHECK//g' 		\
+%{__sed} -i -e '/GNOME_COMPILE_WARNINGS.*/d'	\
+    -i -e '/GNOME_MAINTAINER_MODE_DEFINES/d'	\
+    -i -e '/GNOME_COMMON_INIT/d'		\
+    -i -e '/GNOME_DEBUG_CHECK/d' 		\
+    -i -e '/GNOME_CXX_WARNINGS/d' 		\
     -i -e 's/codegen.py/codegen.pyc/g' configure.ac
+
+%{__sed} -i -e '/APPDATA_XML/d' data/appdata/Makefile.am
 
 %build
 %{__gtkdocize}
@@ -141,10 +143,12 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT		\
 	BROWSER_PLUGIN_DIR=%{plugindir}
 
-%{__rm} $RPM_BUILD_ROOT%{plugindir}/*.la
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-3.0/*.la
-%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/totem/plugins/*/*.{la,py}
+%{__rm} $RPM_BUILD_ROOT%{plugindir}/*.la
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/GConf
+%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 
 %py_comp $RPM_BUILD_ROOT%{_libdir}/totem
 %py_ocomp $RPM_BUILD_ROOT%{_libdir}/totem
@@ -213,7 +217,6 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/totem/plugins/brasero-disc-recorder
 %dir %{_libdir}/totem/plugins/chapters
 %dir %{_libdir}/totem/plugins/dbus
-%dir %{_libdir}/totem/plugins/grilo
 %dir %{_libdir}/totem/plugins/gromit
 %dir %{_libdir}/totem/plugins/im-status
 %dir %{_libdir}/totem/plugins/media-player-keys
@@ -231,7 +234,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_datadir}/glib-2.0/schemas/org.gnome.totem.plugins.pythonconsole.gschema.xml
 
 %attr(755,root,root) %{_libdir}/totem/plugins/*/*.so
-%{_libdir}/totem/plugins/*/*.conf
 %{_libdir}/totem/plugins/*/*.plugin
 %{_libdir}/totem/plugins/*/*.ui
 %{_libdir}/totem/plugins/*/*.py[oc]
