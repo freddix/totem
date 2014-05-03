@@ -16,7 +16,7 @@ BuildRequires:	dbus-glib-devel
 BuildRequires:	gnome-desktop-devel
 BuildRequires:	gnome-icon-theme-devel
 BuildRequires:	gobject-introspection-devel
-BuildRequires:	gstreamer-plugins-base-devel
+BuildRequires:	gstreamer-plugins-base-devel >= 1.2.4
 BuildRequires:	intltool
 BuildRequires:	iso-codes
 BuildRequires:	libgdata-devel
@@ -36,7 +36,7 @@ Requires:	%{name}-libs = %{version}-%{release}
 Requires:	gstreamer-clutter
 Requires:	gstreamer-libav
 Requires:	gstreamer-plugins-bad
-Requires:	gstreamer-plugins-base
+Requires:	gstreamer-plugins-base >= 1.2.4
 Requires:	gstreamer-plugins-good
 Requires:	gstreamer-plugins-ugly
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
