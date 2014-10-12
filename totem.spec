@@ -1,11 +1,11 @@
 Summary:	Movie player for GNOME
 Name:		totem
-Version:	3.12.1
+Version:	3.14.0
 Release:	1
 License:	GPL v2
 Group:		X11/Applications/Multimedia
-Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.12/%{name}-%{version}.tar.xz
-# Source0-md5:	2b506bae9468331d1e5aec4fab231ad7
+Source0:	http://ftp.gnome.org/pub/gnome/sources/totem/3.14/%{name}-%{version}.tar.xz
+# Source0-md5:	c794736ef65fde6c781ae4ba7f850849
 Patch0:		%{name}-mercyful.patch
 URL:		http://www.gnome.org/projects/totem/
 BuildRequires:	autoconf
@@ -14,7 +14,7 @@ BuildRequires:	clutter-gst-devel
 BuildRequires:	clutter-gtk-devel
 BuildRequires:	dbus-glib-devel
 BuildRequires:	gnome-desktop-devel
-BuildRequires:	gnome-icon-theme-devel
+BuildRequires:	adwaita-icon-theme-devel
 BuildRequires:	gobject-introspection-devel
 BuildRequires:	gstreamer-plugins-base-devel >= 1.2.4
 BuildRequires:	intltool
@@ -39,9 +39,9 @@ Requires:	gstreamer-plugins-bad
 Requires:	gstreamer-plugins-base >= 1.2.4
 Requires:	gstreamer-plugins-good
 Requires:	gstreamer-plugins-ugly
+Obsoletes:	browser-plugin-totem
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		plugindir	%{_libdir}/browser-plugins
 %define		_libexecdir	%{_libdir}/%{name}
 
 %description
@@ -92,14 +92,6 @@ Requires:	nautilus
 %description -n nautilus-extension-totem
 Shows video properties and generates thumbnails in Nautilus.
 
-%package -n browser-plugin-totem
-Summary:	Totem plugin for xulrunner
-Group:		X11/Applications
-Requires:	%{name} = %{version}-%{release}
-
-%description -n browser-plugin-totem
-Totem Web Browser plugin.
-
 %prep
 %setup -q
 %patch0 -p1
@@ -127,28 +119,22 @@ Totem Web Browser plugin.
 	--disable-silent-rules		\
 	--disable-static		\
 	--disable-vala			\
-	--enable-browser-plugins	\
 	--enable-nautilus		\
-	--enable-vegas-plugin=no	\
 	--with-html-dir=%{_gtkdocdir}
 
 %{__make} -j1 -C help
-%{__make} \
-	BROWSER_PLUGIN_DIR=%{plugindir}
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT		\
-	BROWSER_PLUGIN_DIR=%{plugindir}
+	DESTDIR=$RPM_BUILD_ROOT
 
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/nautilus/extensions-3.0/*.la
 %{__rm} $RPM_BUILD_ROOT%{_libdir}/totem/plugins/*/*.{la,py}
-%{__rm} $RPM_BUILD_ROOT%{plugindir}/*.la
 %{__rm} -r $RPM_BUILD_ROOT%{_datadir}/GConf
-%{__rm} -r $RPM_BUILD_ROOT%{_datadir}/locale/{ca@valencia,en@shaw}
 
 %py_comp $RPM_BUILD_ROOT%{_libdir}/totem
 %py_ocomp $RPM_BUILD_ROOT%{_libdir}/totem
@@ -183,6 +169,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/totem/plugins/properties/*.so
 %{_libdir}/totem/plugins/properties/*.plugin
 
+%{_datadir}/dbus-1/services/org.gnome.Totem.service
 %{_datadir}/glib-2.0/schemas/org.gnome.totem.enums.xml
 %{_datadir}/glib-2.0/schemas/org.gnome.totem.gschema.xml
 
@@ -245,12 +232,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_bindir}/totem-video-thumbnailer
 %attr(755,root,root) %{_libdir}/nautilus/extensions-3.0/*.so
-
-%files -n browser-plugin-totem
-%defattr(644,root,root,755)
-%attr(755,root,root) %{_libexecdir}/totem-plugin-viewer
-%attr(755,root,root) %{plugindir}/libtotem-cone-plugin.so
-%attr(755,root,root) %{plugindir}/libtotem-gmp-plugin.so
-%attr(755,root,root) %{plugindir}/libtotem-mully-plugin.so
-%attr(755,root,root) %{plugindir}/libtotem-narrowspace-plugin.so
 
